@@ -712,23 +712,89 @@
       }
     }
 
+    // Make No button shrink and fade!
+    function shrinkNoButton() {
+      const newScale = Math.max(0.4, 1 - (attempts * 0.05));
+      const newOpacity = Math.max(0.3, 1 - (attempts * 0.06));
+      noBtn.style.transform = `scale(${newScale}) rotate(${Math.random() * 20 - 10}deg)`;
+      noBtn.style.opacity = newOpacity;
+    }
+
+    // Screen shake effect
+    function shakeScreen() {
+      document.body.style.animation = 'none';
+      document.body.offsetHeight; // trigger reflow
+      document.body.style.animation = 'shake 0.3s ease';
+    }
+
+    // Add shake animation to head
+    const shakeStyle = document.createElement('style');
+    shakeStyle.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        20% { transform: translateX(-5px) rotate(-1deg); }
+        40% { transform: translateX(5px) rotate(1deg); }
+        60% { transform: translateX(-3px) rotate(-0.5deg); }
+        80% { transform: translateX(3px) rotate(0.5deg); }
+      }
+    `;
+    document.head.appendChild(shakeStyle);
+
+    // Scared No button texts
+    const SCARED_TEXTS = [
+      "No 🙈",
+      "Nooo! 😰",
+      "Wait! 😱",
+      "Help! 🆘",
+      "Noooo 😭",
+      "Stooop 🏃‍♀️",
+      "Ahhhh! 😵",
+      "Ok ok... 🥺",
+      "Fine... 😮‍💨",
+      "U win 💗"
+    ];
+
+    // Tilt the card away from No button
+    function tiltCard() {
+      const tiltX = (Math.random() - 0.5) * 3;
+      const tiltY = (Math.random() - 0.5) * 3;
+      card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+      setTimeout(() => {
+        card.style.transform = '';
+      }, 300);
+    }
+
     function onNoThreat(x, y) {
       attempts++;
       setShipping(5 + Math.floor(Math.random() * 5));
       moveNoAwayFrom(x, y);
       growYesButton();
+      shrinkNoButton();
+
+      // Shake screen every 3 attempts
+      if (attempts % 3 === 0) {
+        shakeScreen();
+      }
+
+      // Tilt card every 2 attempts
+      if (attempts % 2 === 0) {
+        tiltCard();
+      }
+
+      // Change No button text progressively
+      if (attempts <= SCARED_TEXTS.length) {
+        noBtn.textContent = SCARED_TEXTS[Math.min(attempts - 1, SCARED_TEXTS.length - 1)];
+      }
 
       const b = noBtn.getBoundingClientRect();
-      burst(b.left + b.width / 2, b.top + b.height / 2, 8);
+      burst(b.left + b.width / 2, b.top + b.height / 2, 8 + attempts);
 
       setHint(CUTE_HINTS[Math.min(attempts - 1, CUTE_HINTS.length - 1)]);
 
-      if (attempts === 8) {
-        noBtn.textContent = "Ok ok... 🥺";
-        setHint("Winuuu it's giving up! You are just so cute 💕");
-      }
       if (attempts >= 12) {
-        noBtn.textContent = "You win 💗";
+        noBtn.textContent = "You win �";
+        noBtn.style.opacity = "0.3";
+        noBtn.style.pointerEvents = "none";
         setHint("The universe has decided, sweetie: it's Yes! 🌟");
       }
     }
