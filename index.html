@@ -332,6 +332,76 @@
         animation: none !important;
       }
     }
+
+    /* Mobile responsive styles */
+    @media (max-width: 600px) {
+      .card {
+        padding: 24px 18px 20px;
+        border-radius: 22px;
+      }
+
+      h1 {
+        font-size: 22px;
+        margin: 16px 0 8px;
+      }
+
+      .subtitle {
+        font-size: 14px;
+        margin-bottom: 16px;
+      }
+
+      .story {
+        font-size: 13px;
+        padding: 14px 14px;
+        margin-bottom: 16px;
+      }
+
+      button {
+        padding: 12px 18px;
+        min-width: 110px;
+        font-size: 14px;
+      }
+
+      .hint {
+        font-size: 12px;
+      }
+
+      .meterWrap {
+        width: 95%;
+      }
+
+      .meterLabel {
+        font-size: 11px;
+      }
+
+      .badge {
+        padding: 8px 12px;
+        font-size: 12px;
+      }
+
+      .cat {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+      }
+
+      .chips {
+        gap: 6px;
+      }
+
+      .chip {
+        padding: 8px 10px;
+        font-size: 11px;
+      }
+
+      .modalBox {
+        padding: 20px 16px;
+      }
+
+      .modalBox h2 {
+        font-size: 22px;
+      }
+    }
   </style>
 </head>
 
@@ -546,6 +616,7 @@
     function moveNoAwayFrom(px, py) {
       const rect = getCardRect();
       const btnRect = noBtn.getBoundingClientRect();
+      const yesBtnRect = yesBtn.getBoundingClientRect();
 
       const cardStyle = getComputedStyle(card);
       if (cardStyle.position === "static") {
@@ -573,6 +644,41 @@
 
       newLeft = clamp(newLeft, pad, maxLeft);
       newTop = clamp(newTop, pad + 100, maxTop);
+
+      // Calculate Yes button position relative to card
+      const yesLeft = yesBtnRect.left - rect.left;
+      const yesTop = yesBtnRect.top - rect.top;
+      const yesRight = yesLeft + yesBtnRect.width;
+      const yesBottom = yesTop + yesBtnRect.height;
+
+      // Check if new position would overlap with Yes button (with 20px margin)
+      const margin = 20;
+      const noRight = newLeft + btnRect.width;
+      const noBottom = newTop + btnRect.height;
+
+      const wouldOverlap = !(
+        noRight < yesLeft - margin ||
+        newLeft > yesRight + margin ||
+        noBottom < yesTop - margin ||
+        newTop > yesBottom + margin
+      );
+
+      // If would overlap, move to a safe position (opposite side or away)
+      if (wouldOverlap) {
+        // Try moving to the right of Yes button
+        if (yesRight + margin + btnRect.width < maxLeft) {
+          newLeft = yesRight + margin + 20;
+        }
+        // Or try left side
+        else if (yesLeft - margin - btnRect.width > pad) {
+          newLeft = yesLeft - margin - btnRect.width - 20;
+        }
+        // Or move below
+        else {
+          newTop = yesBottom + margin + 30;
+          newTop = clamp(newTop, pad + 100, maxTop);
+        }
+      }
 
       noBtn.style.position = "absolute";
       noBtn.style.left = newLeft + "px";
