@@ -178,15 +178,17 @@
       background: linear-gradient(135deg, var(--yes), var(--yes2));
       color: white;
       box-shadow: 0 8px 28px var(--glow);
+      transition: transform 150ms ease, box-shadow 150ms ease, padding 300ms ease, font-size 300ms ease, min-width 300ms ease;
+      z-index: 50;
     }
 
     #yesBtn:hover {
-      transform: translateY(-3px) scale(1.03);
+      transform: translateY(-3px);
       box-shadow: 0 12px 35px var(--glow);
     }
 
     #yesBtn:active {
-      transform: translateY(0px) scale(0.98);
+      transform: translateY(0px);
     }
 
     #noBtn {
@@ -470,7 +472,7 @@
     // =========================
     // Customization
     // =========================
-    const PERSON_NAME = "Hasnae";
+    const PERSON_NAME = "Hasnae 🫶";
     const YOUR_NAME = "Ismail";
     const VIBE_LINES = [
       "I created a little universe where only 'Yes' is allowed, sweetie 💫",
@@ -685,10 +687,36 @@
       noBtn.style.transform = `rotate(${(Math.random() * 10 - 5)}deg)`;
     }
 
+    // Make Yes button grow bigger!
+    let yesScale = 1;
+    function growYesButton() {
+      yesScale += 0.15;
+      const newPadding = 14 + (attempts * 3);
+      const newFontSize = 15 + (attempts * 2);
+      const newMinWidth = 130 + (attempts * 20);
+
+      yesBtn.style.padding = `${newPadding}px ${newPadding + 6}px`;
+      yesBtn.style.fontSize = `${newFontSize}px`;
+      yesBtn.style.minWidth = `${newMinWidth}px`;
+
+      // After many attempts, make it HUGE
+      if (attempts >= 10) {
+        yesBtn.style.position = 'fixed';
+        yesBtn.style.left = '50%';
+        yesBtn.style.top = '50%';
+        yesBtn.style.transform = 'translate(-50%, -50%)';
+        yesBtn.style.minWidth = `${50 + attempts * 5}vw`;
+        yesBtn.style.minHeight = `${20 + attempts * 3}vh`;
+        yesBtn.style.fontSize = `${20 + attempts * 2}px`;
+        yesBtn.style.borderRadius = '30px';
+      }
+    }
+
     function onNoThreat(x, y) {
       attempts++;
       setShipping(5 + Math.floor(Math.random() * 5));
       moveNoAwayFrom(x, y);
+      growYesButton();
 
       const b = noBtn.getBoundingClientRect();
       burst(b.left + b.width / 2, b.top + b.height / 2, 8);
@@ -781,4 +809,3 @@
 </body>
 
 </html>
-
