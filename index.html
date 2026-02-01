@@ -416,7 +416,7 @@
         <div id="badgeText">A little message from the heart</div>
       </div>
 
-      <h1><span id="name">Hasnae</span>, will you be my Valentine?</h1>
+      <h1><span id="name">Hasnae</span> 🫶, will you be my Valentine?</h1>
       <p class="subtitle" id="subtitle">
         I coded this little page just for you... because you deserve something special 🌸
       </p>
@@ -470,13 +470,13 @@
     // =========================
     // Customization
     // =========================
-    const PERSON_NAME = "Hasnae";
+    const PERSON_NAME = "Hasnae 🫶";
     const YOUR_NAME = "Ismail";
     const VIBE_LINES = [
-      "I created a little universe where only 'Yes' is allowed 💫",
-      "Every star on this page represents a reason to adore you 🌟",
-      "My heart coded this page with so much love 💕",
-      "You're the best thing that ever happened to me ✨"
+      "I created a little universe where only 'Yes' is allowed, sweetie 💫",
+      "Every star on this page represents a reason I adore you, cutie 🌟",
+      "My heart coded this page just for you, lovely 💕",
+      "You're the best thing that ever happened to me, sweetie ✨"
     ];
     const BADGE_LINES = [
       "A little message from the heart",
@@ -485,16 +485,15 @@
       "A star just for you ⭐"
     ];
     const CUTE_HINTS = [
-      "The No button is being shy... 🙈",
-      "Aww it's running away! It must be embarrassed 💕",
-      "It's trying to hide... so cute!",
-      "No is in panic mode! 🏃‍♀️💨",
-      "It runs faster than my heart beats for you!",
-      "Poor thing, it has no chance against you 🌸",
+      "The No button is being shy, cutie... ",
+      "Winuuu it's running away! You're just so cute 💕",
+      "It's trying to hide... you're lovely!",
+      "No is in panic mode, sweetie! 🏃‍♀️💨",
+      "It runs faster than my heart beats for you, cutie!",
+      "Poor thing, it has no chance against you, lovely 🌸",
       "No decided to exercise today 😂",
-      "Wow, it's really determined to escape!",
-      "You almost got it! ...or not 😜",
-      "It's playing hide and seek with you! 🙊"
+      "Winuuu it's really determined to escape!",
+      "You almost got it, sweetie! ...or not 😜"
     ];
 
     // Apply name and random badge
@@ -698,11 +697,11 @@
 
       if (attempts === 8) {
         noBtn.textContent = "Ok ok... 🥺";
-        setHint("Aww it's giving up! So cute 💕");
+        setHint("Winuuu it's giving up! You are just so cute 💕");
       }
       if (attempts >= 12) {
         noBtn.textContent = "You win 💗";
-        setHint("The universe has decided: it's Yes! 🌟");
+        setHint("The universe has decided, sweetie: it's Yes! 🌟");
       }
     }
 
@@ -758,13 +757,13 @@
 
     yesBtn.addEventListener("click", () => {
       setShipping(100);
-      setHint("You said Yes! My heart is exploding with happiness 💕");
+      setHint("You said Yes! Winuuu you're so lovely 💕");
       const r = yesBtn.getBoundingClientRect();
       burst(r.left + r.width / 2, r.top + r.height / 2, 30);
 
       const extra = VIBE_LINES[Math.floor(Math.random() * VIBE_LINES.length)];
       modalTitle.textContent = "It's a YES! 💘";
-      modalText.textContent = `${extra}\n\nYou make me so happy, beautiful 💕`;
+      modalText.textContent = `${extra}\n\nYou make me so happy, cutie 💕`;
 
       openModal();
     });
